@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { demoAction } from './actions/demoActions'
+
 import logo from './logo.svg';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
+const mapStateToProps = state => ({
+  ...state
+});
 
 const MainMenu = () => (
   <div>
@@ -55,6 +63,10 @@ const Info = () => (
 )
 
 class App extends Component {
+  demoAction = (event) => {
+    this.props.demoAction();
+  }
+
   render() {
     return (
       <Router>
@@ -70,6 +82,12 @@ class App extends Component {
             <Route exact path="/code" component={Code} />
             <Route exact path="/contact" component={Contact} />
             <Route exact path="/info" component={Info} />
+            <button onClick={this.demoAction}>Test redux action</button>
+            <pre>
+              {
+                JSON.stringify(this.props)
+              }
+            </pre>
           </div>
         </div>
       </Router>
@@ -77,4 +95,5 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, {demoAction})(App);
+
